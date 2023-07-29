@@ -1,0 +1,11 @@
+#version: "3.3"
+
+
+services:
+  ya_tank:
+    container_name: yandex-tank
+    image: direvius/yandex-tank:latest
+    volumes:
+      - ./:/var/loadtest
+
+

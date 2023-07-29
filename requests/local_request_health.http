@@ -1,0 +1,2 @@
+GET http://127.0.0.1:9999/health
+Accept: application/json

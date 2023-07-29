@@ -1,0 +1,16 @@
+phantom:
+  address: books_classifier:9999 # [Target's address]:[target's port]
+  uris:
+    - <enpoint> #/v1/get_domains?query=asd
+  load_profile:
+    load_type: rps
+    schedule: const(1000, 5m) # step(400, 1000, 50, 20s)
+  instances: 99
+#  loop: 100000
+autostop:
+  autostop:
+    - time(200ms, 10s)
+console:
+  enabled: true # enable console output
+telegraf:
+  enabled: false # let's disable telegraf monitoring for the first time
