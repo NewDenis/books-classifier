@@ -1,6 +1,7 @@
 import boto3
 from tqdm import tqdm
 import os
+import pandas as pd
 import io
 import zipfile
 import time
@@ -16,7 +17,7 @@ from rtfparse.entities import Plain_Text
 from chardet import UniversalDetector
 from lxml import html as html_module
 from lxml import etree
-from typing import List
+from typing import List, Dict, Tuple
 
 
 def html2text(html_content):
@@ -133,7 +134,7 @@ def safe_extract_text_from(
     try:
         return extract_text_from(zf, file_name, file_ext)
     except Exception as e:
-        print(type(e), e, file_name)
+        # print(type(e), e, file_name)
         return []
 
 
@@ -182,75 +183,105 @@ def download_s3file(file_obj: S3File, save_path: str):
     return save_path
 
 
-session = boto3.session.Session()
-
-s3 = session.resource(
-    service_name="s3",
-    region_name="ru-central1",
-    endpoint_url="https://storage.yandexcloud.net",
-)
-bucket_name = "books-raw-data"
-bucket = s3.Bucket(bucket_name)
-
-zipfiles = [
-    key
-    for obj in bucket.objects.iterator()
-    if (key := obj.key).endswith(".zip")
-]
-
-main_pbar = tqdm(
-    zipfiles,
-    leave=False,
-    nrows=4,
-)
-
-classes = defaultdict(list)
-
-for zipfile_key in main_pbar:
-    obj = bucket.Object(zipfile_key)
-    file = S3File(obj)
-    saved_path = download_s3file(
-        file, os.path.join("/", "mnt", "data", zipfile_key)
+def save_sentences(
+    classes: Dict[Tuple[str, ...], List[str]], findx: int, path_to_save: str
+):
+    dataset = []
+    for cls_key, sentence_list in classes.items():
+        cls_key = {f"cls{i}": cls for i, cls in enumerate(cls_key[::-1])}
+        data = [{"text": sentence, **cls_key} for sentence in sentence_list]
+        dataset.append(pd.DataFrame(data))
+    dataset = pd.concat(dataset, ignore_index=True)
+    dataset.to_parquet(
+        os.path.join(path_to_save, f"sentences_{findx:0>6}.pqt")
     )
-    try:
-        with open(saved_path, "rb") as fp:
-            with zipfile.ZipFile(fp) as zf:
-                for zipname in tqdm(zf.namelist(), leave=False):
-                    cls = tuple(
-                        os.path.splitext(os.path.basename(zipname))[0].split(
-                            "_"
+
+
+if __name__ == "__main__":
+    session = boto3.session.Session()
+
+    s3 = session.resource(
+        service_name="s3",
+        region_name="ru-central1",
+        endpoint_url="https://storage.yandexcloud.net",
+    )
+    bucket_name = "books-raw-data"
+    bucket = s3.Bucket(bucket_name)
+
+    zipfiles = [
+        key
+        for obj in bucket.objects.iterator()
+        if (key := obj.key).endswith(".zip")
+    ]
+
+    main_pbar = tqdm(
+        zipfiles,
+        leave=False,
+        nrows=4,
+    )
+
+    classes = defaultdict(list)
+    sentence_count_to_save = 2_000_000
+    sentence_count = 0
+    findx = 0
+    path_to_save = os.path.join("/", "mnt", "data", "datasets", "raw")
+    if not os.path.exists(path_to_save):
+        os.makedirs(path_to_save)
+
+    for zipfile_key in main_pbar:
+        obj = bucket.Object(zipfile_key)
+        file = S3File(obj)
+        saved_path = download_s3file(
+            file, os.path.join("/", "mnt", "data", zipfile_key)
+        )
+        try:
+            with open(saved_path, "rb") as fp:
+                with zipfile.ZipFile(fp) as zf:
+                    for zipname in tqdm(zf.namelist(), leave=False):
+                        cls = tuple(
+                            os.path.splitext(os.path.basename(zipname))[
+                                0
+                            ].split("_")
                         )
-                    )
-                    with zf.open(zipname) as zfp, zipfile.ZipFile(
-                        zfp
-                    ) as inner_zf:
-                        for doc_file in inner_zf.namelist():
-                            doc_path, doc_ext = os.path.splitext(doc_file)
-                            doc_ext = doc_ext.lower()
-                            sentences = safe_extract_text_from(
-                                inner_zf, doc_file, doc_ext
-                            )
-                            classes[cls].extend(sentences)
-                        main_pbar.set_description(
-                            "|".join(
-                                f"{key[-2]}({nice_size(len(val), divisor=1000, units='', precision=0)})"
-                                for key, val in sorted(
-                                    classes.items(),
-                                    key=lambda x: len(x[-1]),
-                                    reverse=True,
+                        with zf.open(zipname) as zfp, zipfile.ZipFile(
+                            zfp
+                        ) as inner_zf:
+                            for doc_file in inner_zf.namelist():
+                                doc_path, doc_ext = os.path.splitext(doc_file)
+                                doc_ext = doc_ext.lower()
+                                sentences = safe_extract_text_from(
+                                    inner_zf, doc_file, doc_ext
+                                )
+                                classes[cls].extend(sentences)
+                                sentence_count += len(sentences)
+                            if sentence_count >= sentence_count_to_save:
+                                save_sentences(classes, findx, path_to_save)
+                                findx += 1
+                                del classes
+                                classes = defaultdict(list)
+                                sentence_count = 0
+                            main_pbar.set_description(
+                                str(findx)
+                                + "|".join(
+                                    f"{key[-2]}({nice_size(len(val), divisor=1000, units='', precision=0)})"
+                                    for key, val in sorted(
+                                        classes.items(),
+                                        key=lambda x: len(x[-1]),
+                                        reverse=True,
+                                    )
                                 )
                             )
-                        )
-    except zipfile.BadZipFile as e:
-        print(zipfile_key, e)
-print(
-    *[
-        f"{key[-2]}({nice_size(len(val), divisor=1000, units='', precision=0)})"
-        for key, val in sorted(
-            classes.items(),
-            key=lambda x: len(x[-1]),
-            reverse=True,
-        )
-    ],
-    sep="\n",
-)
+        except zipfile.BadZipFile as e:
+            print(zipfile_key, e)
+    save_sentences(classes, findx, path_to_save)
+    print(
+        *[
+            f"{key[-2]}({nice_size(len(val), divisor=1000, units='', precision=0)})"
+            for key, val in sorted(
+                classes.items(),
+                key=lambda x: len(x[-1]),
+                reverse=True,
+            )
+        ],
+        sep="\n",
+    )

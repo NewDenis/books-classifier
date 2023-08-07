@@ -2,3 +2,4 @@
 .python-version
 settings.toml
 .secrets.toml
+__pycache__
