@@ -5,12 +5,30 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Current File",
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": false
+            "justMyCode": false,
+        },
+        {
+            "name": "prepare_dataset",
+            "type": "python",
+            "request": "launch",
+            "program": "scripts/prepare_dataset.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": ["--samples", "2000000", "--out-path", "/mnt/data/"]
+        },
+        {
+            "name": "train_and_save",
+            "type": "python",
+            "request": "launch",
+            "program": "scripts/train_and_save.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": ["--tfidf", "--data-path", "/mnt/data/", "--fraction", "0.05"]
         }
     ]
 }
