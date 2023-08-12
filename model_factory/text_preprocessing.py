@@ -1,6 +1,8 @@
 import re
+import Stemmer
 
 
+RU_STEMMER = Stemmer.Stemmer("ru")
 TABS_REGEXP = re.compile(r"[\n\t\r]+")
 TAGS_REGEXP = re.compile(r"(\<(/?[^>]+)>)")
 SYMBOLS_REGEXP = re.compile(r"[^a-zа-я0-9]")
@@ -22,4 +24,8 @@ def text_cleanup_preprocessor(text: str) -> str:
     result = SYMBOLS_REGEXP.sub(" ", result)
     result = result.strip()
     result = SPACES_REGEXP.sub(" ", result)
-    return result
+    return " ".join([RU_STEMMER.stemWord(word) for word in result.split()])
+
+
+def text_cleanup(texts):
+    return [text_cleanup_preprocessor(text) for text in texts]

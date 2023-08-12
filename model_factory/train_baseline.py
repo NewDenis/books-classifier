@@ -3,7 +3,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.preprocessing import FunctionTransformer
-from model_factory.text_preprocessing import text_cleanup_preprocessor
+from model_factory.text_preprocessing import text_cleanup
 import os
 import pandas as pd
 from tqdm import tqdm
@@ -126,7 +126,6 @@ def train_baseline(tfidf, data_path, frac):
             os.path.join(raw_data_path, file_name), columns=["text", "cls1"]
         )
         train_data.append(data)
-        break
     train_data = pd.concat(train_data, ignore_index=True)
     if frac < 1.0:
         splitter = StratifiedShuffleSplit(1, train_size=frac)
@@ -138,18 +137,19 @@ def train_baseline(tfidf, data_path, frac):
             )
     else:
         train_data.sample(frac=frac)
+    print(len(train_data))
     vect_kwargs = {
         "stop_words": STOPWORDS,
         "max_features": 50_000,
         "ngram_range": (1, 3),
+        "min_df": 2,
+        "max_df": 0.95,
     }
     pipeline = Pipeline(
         [
             (
                 "preprocessor",
-                FunctionTransformer(
-                    lambda x: [text_cleanup_preprocessor(text) for text in x]
-                ),
+                FunctionTransformer(text_cleanup),
             ),
             (
                 "vectorizer",
@@ -163,4 +163,4 @@ def train_baseline(tfidf, data_path, frac):
             ),
         ]
     )
-    return pipeline.fit(data["text"], data["cls1"])
+    return pipeline.fit(train_data["text"], train_data["cls1"])

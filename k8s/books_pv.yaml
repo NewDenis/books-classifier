@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: books-artifacts
+spec:
+  capacity:
+    storage: 161061273600
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "yc-network-ssd"
+  csi:
+    driver: disk-csi-driver.mks.ycloud.io
+    fsType: ext4
+    volumeHandle: fhm8s3e753f74i1glomp

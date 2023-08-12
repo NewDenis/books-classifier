@@ -1,0 +1,6 @@
+outs:
+- md5: 16e0c7066fc12a161a5de1c58b664106.dir
+  size: 2321010356
+  nfiles: 1
+  hash: md5
+  path: tfidf_logreg

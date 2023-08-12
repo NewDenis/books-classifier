@@ -3,3 +3,4 @@
 settings.toml
 .secrets.toml
 __pycache__
+.vscode/
