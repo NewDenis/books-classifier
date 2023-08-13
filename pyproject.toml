@@ -38,6 +38,7 @@ pystemmer = "^2.2.0.1"
 dvc-s3 = "^2.23.0"
 apache-airflow = "^2.6.3"
 apache-airflow-providers-cncf-kubernetes = "^7.4.1"
+apache-airflow-providers-telegram = "^4.1.1"
 
 [build-system]
 requires = ["poetry-core"]

@@ -115,6 +115,8 @@ def prepare_data(bucket_name, samples, out_path):
             with open(saved_path, "rb") as fp:
                 with zipfile.ZipFile(fp) as zf:
                     for zipname in tqdm(zf.namelist(), leave=False):
+                        if samples_count >= samples:
+                            break
                         cls = tuple(
                             os.path.splitext(os.path.basename(zipname))[
                                 0

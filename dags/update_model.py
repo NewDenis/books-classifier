@@ -65,6 +65,27 @@ secret_volumes = [
     # ),
 ]
 
+# tg_secrets = [
+#     Secret(
+#         deploy_type="env",
+#         # Path where we mount the secret as volume
+#         deploy_target="TG_CHAT_ID",
+#         # Name of Kubernetes Secret
+#         secret="tg-chat",
+#         # Key in the form of service account file name
+#         key="tg-chat",
+#     ),
+#     Secret(
+#         deploy_type="env",
+#         # Path where we mount the secret as volume
+#         deploy_target="TG_TOKEN",
+#         # Name of Kubernetes Secret
+#         secret="tg-token",
+#         # Key in the form of service account file name
+#         key="tg-token",
+#     ),
+# ]
+
 
 # These args will get passed on to each operator
 # You can override them on a per-task basis during operator initialization
@@ -77,7 +98,7 @@ with DAG(
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = KubernetesPodOperator(
         task_id="prepare_data",
-        image="pimenovdv/books-classifier:0.2.0",
+        image="pimenovdv/books-classifier:latest",
         cmds=["python"],
         arguments=["./scripts/prepare_data.py"],
         image_pull_policy="Always",
@@ -88,7 +109,7 @@ with DAG(
 
     t2 = KubernetesPodOperator(
         task_id="train_save",
-        image="pimenovdv/books-classifier:0.2.0",
+        image="pimenovdv/books-classifier:latest",
         # cmds=["cat"],
         # arguments=["/app/.dvc/config"],
         cmds=["python"],
