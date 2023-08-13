@@ -18,7 +18,7 @@ with DAG(
 ) as dag:
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = BashOperator(
-        task_id="git install",
+        task_id="git_install",
         bash_command="apt install git -y",
     )
 
