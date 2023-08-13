@@ -72,7 +72,7 @@ with DAG(
     )
 
     t2 = KubernetesPodOperator(
-        task_id="prepare_data",
+        task_id="test",
         image="pimenovdv/books-classifier:0.2.0",
         cmds=["echo"],
         arguments=["~"],
@@ -99,4 +99,4 @@ with DAG(
         secrets=secret_volumes,
     )
 
-    t1 >> t2
+    t1 >> t2 >> t3
