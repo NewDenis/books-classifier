@@ -14,6 +14,7 @@ from airflow.utils.dates import days_ago
 with DAG(
     "update_model",
     description="Testing DAG",
+    start_date=days_ago(2),
 ) as dag:
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = BashOperator(
