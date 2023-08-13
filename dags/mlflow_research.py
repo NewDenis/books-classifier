@@ -90,7 +90,7 @@ secret_volumes = [
 # These args will get passed on to each operator
 # You can override them on a per-task basis during operator initialization
 with DAG(
-    "update_model",
+    "mlflow",
     description="Testing DAG",
     start_date=datetime.now(),
     # default_args={"run_as_user": "root"},
@@ -98,7 +98,7 @@ with DAG(
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = BashOperator(
         bash_command="curl http://10.128.0.8:5000",
-        task_id="prepare_data",
+        task_id="curl",
     )
     # t1 = KubernetesPodOperator(
     #     task_id="prepare_data",

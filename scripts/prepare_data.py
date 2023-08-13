@@ -59,7 +59,7 @@ def download_s3file(file_obj: S3File, save_path: str):
 
 def save_sentences(
     classes: Dict[Tuple[str, ...], List[str]], findx: int, path_to_save: str
-):
+) -> int:
     dataset = []
     for cls_key, sentence_list in classes.items():
         cls_key = {f"cls{i}": cls for i, cls in enumerate(cls_key[::-1])}
@@ -69,6 +69,7 @@ def save_sentences(
     dataset.to_parquet(
         os.path.join(path_to_save, f"sentences_{findx:0>6}.pqt")
     )
+    return len(dataset)
 
 
 @click.command()
@@ -136,11 +137,12 @@ def prepare_data(bucket_name, samples, out_path):
                                 classes[cls].extend(sentences)
                                 sentence_count += len(sentences)
                             if sentence_count >= sentence_count_to_save:
-                                save_sentences(classes, findx, path_to_save)
+                                samples_count += save_sentences(
+                                    classes, findx, path_to_save
+                                )
                                 findx += 1
                                 del classes
                                 classes = defaultdict(list)
-                                samples_count += len(sentences)
                                 sentence_count = 0
                             main_pbar.set_description(
                                 str(findx)

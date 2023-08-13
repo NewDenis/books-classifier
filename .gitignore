@@ -5,3 +5,4 @@ settings.toml
 __pycache__
 .vscode/
 k8s/override-values.yaml
+mlruns
