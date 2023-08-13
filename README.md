@@ -97,6 +97,6 @@ helm upgrade --install airflow apache-airflow/airflow -f ./k8s/override-values.y
 ```
 kubectl create secret generic dvc-config --from-file config=./.dvc/config
 kubectl create secret generic aws-credentials --from-file credentials=~/.aws/credentials
+kubectl create secret generic aws-access-key-id --from-literal=aws-access-key-id=${AWS_ACCESS_KEY_ID}
+kubectl create secret generic aws-secret-access-key --from-literal=aws-secret-access-key=${AWS_SECRET_ACCESS_KEY}
 ```
-
-
