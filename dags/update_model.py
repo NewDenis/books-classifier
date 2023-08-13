@@ -19,7 +19,7 @@ with DAG(
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = BashOperator(
         task_id="git_install",
-        bash_command="apt install git -y",
+        bash_command="sudo apt install git -y",
     )
 
     t2 = BashOperator(
