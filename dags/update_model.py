@@ -3,6 +3,9 @@ from textwrap import dedent
 
 # The DAG object; we'll need this to instantiate a DAG
 from airflow import DAG
+from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
+    KubernetesPodOperator,
+)
 
 # Operators; we need this to operate!
 from airflow.operators.bash import BashOperator
@@ -18,46 +21,9 @@ with DAG(
     # default_args={"run_as_user": "root"},
 ) as dag:
     # t1, t2 and t3 are examples of tasks created by instantiating operators
-    t1 = BashOperator(
-        task_id="git_install",
-        bash_command='echo "installed"',
+    t1 = KubernetesPodOperator(
+        task_id="prepare_data",
+        image="pimenovdv/books-classifier:0.1.0",
+        cmds=["python"],
+        arguments=["./scripts/prepare_data.py", "--help"],
     )
-
-    t2 = BashOperator(
-        task_id="clone",
-        bash_command="git clone git@github.com:NewDenis/books-classifier.git",
-    )
-    t1.doc_md = dedent(
-        """\
-    #### Task Documentation
-    You can document your task using the attributes `doc_md` (markdown),
-    `doc` (plain text), `doc_rst`, `doc_json`, `doc_yaml` which gets
-    rendered in the UI's Task Instance Details page.
-    ![img](http://montcs.bloomu.edu/~bobmon/Semesters/2012-01/491/import%20soul.png)
-
-    """
-    )
-
-    dag.doc_md = __doc__  # providing that you have a docstring at the beggining of the DAG
-    dag.doc_md = """
-    This is a documentation placed anywhere
-    """  # otherwise, type it like this
-    templated_command = dedent(
-        """
-    {% for i in range(5) %}
-        echo "{{ ds }}"
-        echo "{{ macros.ds_add(ds, 7)}}"
-        echo "{{ params.my_param }}"
-    {% endfor %}
-    """
-    )
-
-    # t3 = BashOperator(
-    #     task_id="templated",
-    #     depends_on_past=False,
-    #     bash_command=templated_command,
-    #     params={"my_param": "Parameter I passed in"},
-    # )
-
-    # t1 >> [t2, t3]
-    t1 >> t2

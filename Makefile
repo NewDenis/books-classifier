@@ -10,5 +10,5 @@ gen-dvc:
 
 gen-req:
 	@echo "Генерация requirements.txt из poetry"
-	echo "poetry-core>=1.6.1" | tee books_classifier/requirements.txt
-	poetry export --without-hashes | grep -v "@ file" >> books_classifier/requirements.txt
+	echo "poetry-core>=1.6.1" | tee requirements.txt
+	poetry export --without-hashes | grep -v "@ file" >> requirements.txt
