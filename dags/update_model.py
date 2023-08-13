@@ -23,9 +23,9 @@ with DAG(
     )
 
     t2 = BashOperator(
-        task_id="sleep",
+        task_id="mkdir",
         depends_on_past=False,
-        bash_command="sleep 5",
+        bash_command="mkdir /mnt/data/hello",
         retries=3,
     )
     t1.doc_md = dedent(
