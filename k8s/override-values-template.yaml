@@ -9,11 +9,3 @@ extraSecrets:
   airflow-ssh-secret:
     data: |
       gitSshKey: ${SECRET_GIT_SSH_KEY}
-workers:
-  extraVolumes: 
-    - name: books-volume
-      mountPath: /mnt/data
-  extraVolumeMounts:
-    - name: books-volume
-      persistentVolumeClaim:
-        claimName: books-artifacts-claim
