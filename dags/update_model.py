@@ -19,12 +19,12 @@ with DAG(
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = BashOperator(
         task_id="ls",
-        bash_command="ls /mnt/data",
+        bash_command="ls",
     )
 
     t2 = BashOperator(
-        task_id="mkdir",
-        bash_command="mkdir /mnt/data/hello",
+        task_id="sleep",
+        bash_command="sleep 5",
     )
     t1.doc_md = dedent(
         """\
