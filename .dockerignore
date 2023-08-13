@@ -5,7 +5,8 @@ __pycache__*
 .idea*
 .gitlab
 ./cfg_dev
-.gitlab-ci.yml
 Dockerfile
 /.dvc/cache*
 /.dvc/tmp*
+dags*
+k8s*

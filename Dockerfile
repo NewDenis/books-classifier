@@ -12,6 +12,7 @@ RUN apt update && apt install wget locales gcc build-essential nano htop curl py
 RUN pip install poetry
 RUN poetry config virtualenvs.create false
 RUN poetry install
+RUN pip install apache-airflow-providers-docker
 
 RUN sed -i -e \
   's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen \
@@ -23,4 +24,4 @@ ENV LC_ALL ru_RU.UTF-8
 ENV TZ Europe/Moscow
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-CMD ["uvicorn", "app.main:app_factory", "--factory", "--host", "0.0.0.0", "--port", "80"]
+# CMD ["uvicorn", "books_classifier.app.main:app_factory", "--factory", "--host", "0.0.0.0", "--port", "80"]

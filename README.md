@@ -90,5 +90,5 @@ ssh-keygen -t rsa -b 4096 -C "<email>"
 ```bash
 export SECRET_GIT_SSH_KEY=$(base64 <имя файла приватного ключа> -w 0)
 envsubst < ./k8s/override-values-template.yaml > ./k8s/override-values.yaml
-helm upgrade --install airflow apache-airflow/airflow -f override-values.yaml
+helm upgrade --install airflow apache-airflow/airflow -f ./k8s/override-values.yaml
 ```
