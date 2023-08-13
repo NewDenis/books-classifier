@@ -18,13 +18,13 @@ with DAG(
 ) as dag:
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = BashOperator(
-        task_id="ls",
-        bash_command="ls",
+        task_id="git install",
+        bash_command="apt install git -y",
     )
 
     t2 = BashOperator(
-        task_id="sleep",
-        bash_command="sleep 5",
+        task_id="clone",
+        bash_command="git clone git@github.com:NewDenis/books-classifier.git",
     )
     t1.doc_md = dedent(
         """\
