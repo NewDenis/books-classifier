@@ -60,7 +60,8 @@ with DAG(
     t1 = KubernetesPodOperator(
         task_id="prepare_data",
         image="pimenovdv/books-classifier:0.2.0",
-        cmds=["ls ~/.aws/"],
+        cmds=["ls"],
+        arguments=["~/.aws/"],
         # cmds=["python"],
         # arguments=["./scripts/prepare_data.py"],
         image_pull_policy="Always",
@@ -72,7 +73,8 @@ with DAG(
     t2 = KubernetesPodOperator(
         task_id="train_save",
         image="pimenovdv/books-classifier:0.2.0",
-        cmds=["cat /app/.dvc/config"],
+        cmds=["cat"],
+        arguments=["/app/.dvc/config"],
         # cmds=["python"],
         # arguments=["./scripts/train_and_save.py"],
         image_pull_policy="Always",
