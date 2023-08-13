@@ -36,15 +36,15 @@ secret_volumes = [
         # Key in the form of service account file name
         key="config",
     ),
-    # Secret(
-    #     deploy_type="volume",
-    #     # Path where we mount the secret as volume
-    #     deploy_target="$HOME/.aws/",
-    #     # Name of Kubernetes Secret
-    #     secret="aws-credentials",
-    #     # Key in the form of service account file name
-    #     key="credentials",
-    # ),
+    Secret(
+        deploy_type="volume",
+        # Path where we mount the secret as volume
+        deploy_target="/root/.aws/",
+        # Name of Kubernetes Secret
+        secret="aws-credentials",
+        # Key in the form of service account file name
+        key="credentials",
+    ),
     Secret(
         deploy_type="env",
         # Path where we mount the secret as volume
@@ -92,8 +92,8 @@ with DAG(
     t2 = KubernetesPodOperator(
         task_id="test",
         image="pimenovdv/books-classifier:0.2.0",
-        cmds=["ls"],
-        arguments=["~/.aws/"],
+        cmds=["cat"],
+        arguments=["/root/.aws/credentials"],
         # cmds=["python"],
         # arguments=["./scripts/prepare_data.py"],
         image_pull_policy="Always",
