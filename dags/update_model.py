@@ -45,24 +45,24 @@ secret_volumes = [
         # Key in the form of service account file name
         key="credentials",
     ),
-    Secret(
-        deploy_type="env",
-        # Path where we mount the secret as volume
-        deploy_target="AWS_ACCESS_KEY_ID",
-        # Name of Kubernetes Secret
-        secret="aws-access-key-id",
-        # Key in the form of service account file name
-        key="aws-access-key-id",
-    ),
-    Secret(
-        deploy_type="env",
-        # Path where we mount the secret as volume
-        deploy_target="AWS_SECRET_ACCESS_KEY",
-        # Name of Kubernetes Secret
-        secret="aws-secret-access-key",
-        # Key in the form of service account file name
-        key="aws-secret-access-key",
-    ),
+    # Secret(
+    #     deploy_type="env",
+    #     # Path where we mount the secret as volume
+    #     deploy_target="AWS_ACCESS_KEY_ID",
+    #     # Name of Kubernetes Secret
+    #     secret="aws-access-key-id",
+    #     # Key in the form of service account file name
+    #     key="aws-access-key-id",
+    # ),
+    # Secret(
+    #     deploy_type="env",
+    #     # Path where we mount the secret as volume
+    #     deploy_target="AWS_SECRET_ACCESS_KEY",
+    #     # Name of Kubernetes Secret
+    #     secret="aws-secret-access-key",
+    #     # Key in the form of service account file name
+    #     key="aws-secret-access-key",
+    # ),
 ]
 
 
@@ -78,11 +78,8 @@ with DAG(
     t1 = KubernetesPodOperator(
         task_id="prepare_data",
         image="pimenovdv/books-classifier:0.2.0",
-        cmds=["env"],
-        # cmds=["ls"],
-        # arguments=["~/.aws/"],
-        # cmds=["python"],
-        # arguments=["./scripts/prepare_data.py"],
+        cmds=["python"],
+        arguments=["./scripts/prepare_data.py"],
         image_pull_policy="Always",
         volume_mounts=[volume_mount],
         volumes=[volume],
@@ -90,29 +87,16 @@ with DAG(
     )
 
     t2 = KubernetesPodOperator(
-        task_id="test",
-        image="pimenovdv/books-classifier:0.2.0",
-        cmds=["cat"],
-        arguments=["/root/.aws/credentials"],
-        # cmds=["python"],
-        # arguments=["./scripts/prepare_data.py"],
-        image_pull_policy="Always",
-        volume_mounts=[volume_mount],
-        volumes=[volume],
-        secrets=secret_volumes,
-    )
-
-    t3 = KubernetesPodOperator(
         task_id="train_save",
         image="pimenovdv/books-classifier:0.2.0",
-        cmds=["cat"],
-        arguments=["/app/.dvc/config"],
-        # cmds=["python"],
-        # arguments=["./scripts/train_and_save.py"],
+        # cmds=["cat"],
+        # arguments=["/app/.dvc/config"],
+        cmds=["python"],
+        arguments=["./scripts/train_and_save.py"],
         image_pull_policy="Always",
         volume_mounts=[volume_mount],
         volumes=[volume],
         secrets=secret_volumes,
     )
 
-    t1 >> t2 >> t3
+    t1 >> t2
