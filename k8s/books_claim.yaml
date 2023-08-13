@@ -4,9 +4,9 @@ metadata:
   name: books-artifacts-claim
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 161061273600
-  storageClassName: "rwx-support"
+  storageClassName: "yc-network-ssd"
   volumeName: books-artifacts
