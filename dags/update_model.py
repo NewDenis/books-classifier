@@ -23,7 +23,8 @@ with DAG(
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = KubernetesPodOperator(
         task_id="prepare_data",
-        image="pimenovdv/books-classifier:0.1.0",
+        image="pimenovdv/books-classifier:0.2.0",
         cmds=["python"],
         arguments=["./scripts/prepare_data.py", "--help"],
+        image_pull_policy="Always",
     )
