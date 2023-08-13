@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from textwrap import dedent
 
 # The DAG object; we'll need this to instantiate a DAG
@@ -14,7 +14,7 @@ from airflow.utils.dates import days_ago
 with DAG(
     "update_model",
     description="Testing DAG",
-    start_date=days_ago(2),
+    start_date=datetime.now(),
 ) as dag:
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = BashOperator(
