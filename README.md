@@ -92,3 +92,11 @@ export SECRET_GIT_SSH_KEY=$(base64 <имя файла приватного кл�
 envsubst < ./k8s/override-values-template.yaml > ./k8s/override-values.yaml
 helm upgrade --install airflow apache-airflow/airflow -f ./k8s/override-values.yaml
 ```
+
+12. Kubernetes Secrets Setting
+```
+kubectl create secret generic dvc-config --from-file config=./.dvc/config
+kubectl create secret generic aws-credentials --from-file credentials=~/.aws/credentials
+```
+
+

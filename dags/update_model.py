@@ -8,6 +8,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
 )
 
 # Operators; we need this to operate!
+from airflow.kubernetes.secret import Secret
 from airflow.operators.bash import BashOperator
 from airflow.utils.dates import days_ago
 from kubernetes.client import models as k8s
@@ -24,6 +25,27 @@ volume = k8s.V1Volume(
         claim_name="books-volume"
     ),
 )
+
+secret_volumes = [
+    Secret(
+        deploy_type="volume",
+        # Path where we mount the secret as volume
+        deploy_target="/app/.dvc/",
+        # Name of Kubernetes Secret
+        secret="dvc-config",
+        # Key in the form of service account file name
+        key="config",
+    ),
+    Secret(
+        deploy_type="volume",
+        # Path where we mount the secret as volume
+        deploy_target="~/.aws/",
+        # Name of Kubernetes Secret
+        secret="aws-credentials",
+        # Key in the form of service account file name
+        key="credentials",
+    ),
+]
 
 
 # These args will get passed on to each operator
@@ -43,6 +65,7 @@ with DAG(
         image_pull_policy="Always",
         volume_mounts=[volume_mount],
         volumes=[volume],
+        secrets=secret_volumes,
     )
 
     t2 = KubernetesPodOperator(
@@ -53,6 +76,7 @@ with DAG(
         image_pull_policy="Always",
         volume_mounts=[volume_mount],
         volumes=[volume],
+        secrets=secret_volumes,
     )
 
     t1 >> t2
