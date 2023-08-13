@@ -1,0 +1,11 @@
+dags:
+  gitSync:
+    enabled: true
+    repo: git@github.com:NewDenis/books-classifier.git
+    branch: main
+    subPath: "dags"
+    sshKeySecret: airflow-ssh-secret
+extraSecrets:
+  airflow-ssh-secret:
+    data: |
+      gitSshKey: ${SECRET_GIT_SSH_KEY}

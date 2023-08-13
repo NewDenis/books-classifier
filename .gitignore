@@ -4,3 +4,4 @@ settings.toml
 .secrets.toml
 __pycache__
 .vscode/
+k8s/override-values.yaml

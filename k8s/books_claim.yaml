@@ -8,5 +8,5 @@ spec:
   resources:
     requests:
       storage: 161061273600
-  storageClassName: "yc-network-ssd"
+  storageClassName: "rwx-support"
   volumeName: books-artifacts

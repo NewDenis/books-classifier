@@ -7,7 +7,7 @@ spec:
     storage: 161061273600
   accessModes:
     - ReadWriteMany
-  storageClassName: "yc-network-ssd"
+  storageClassName: "rwx-support"
   csi:
     driver: disk-csi-driver.mks.ycloud.io
     fsType: ext4

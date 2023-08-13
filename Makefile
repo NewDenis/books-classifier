@@ -31,25 +31,3 @@ dep-install:
 gen-dvc:
 	@echo "Генерация DVC конфига"
 	envsubst < ./.dvc/config.templ > ./.dvc/config
-
-
-reformat:
-	@echo "Переформатирование файлов с кодов, если есть необходимость"
-	isort .
-	black --line-length 79 .
-
-load-models:
-	@echo "Загрузить модели из S3"
-	dvc pull -r $(DVC_MODEL_ARTIFACTORY) <USED_MODEL_1>
-
-build:
-	@echo "Сборка контейнера $(DOCKER_CONTAINER_LOCAL_NAME)"
-	docker build -t $(DOCKER_CONTAINER_LOCAL_NAME) .
-
-up:
-	@echo "Подъем контейнера $(DOCKER_CONTAINER_LOCAL_NAME)"
-	docker-compose -f docker-compose.local.yml up
-
-docker-connect:
-	@echo "Присоединиться к контейнеру $(DOCKER_CONTAINER_LOCAL_NAME) (локально)"
-	docker exec -it $(DOCKER_CONTAINER_LOCAL_NAME) sh

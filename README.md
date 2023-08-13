@@ -77,3 +77,18 @@ make gen-dvc
 echo "make reformat" > .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
+
+11. Установка Airflow в Kubernetes с GitSync
+
+Создаём ключ SSH для репозитория
+```bash
+ssh-keygen -t rsa -b 4096 -C "<email>"
+```
+> Важно! Лучше использовать нестандартное название файла
+
+Публичный ключ (.pub) нужно добавить в репозиторий гита
+```bash
+export SECRET_GIT_SSH_KEY=$(base64 <имя файла приватного ключа> -w 0)
+envsubst < ./k8s/override-values-template.yaml > ./k8s/override-values.yaml
+helm upgrade --install airflow apache-airflow/airflow -f override-values.yaml
+```
