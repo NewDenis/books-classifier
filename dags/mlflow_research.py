@@ -97,7 +97,7 @@ with DAG(
 ) as dag:
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = BashOperator(
-        bash_command="curl http://10.128.0.8:5000",
+        bash_command="curl http://mlflow-service:5000",
         task_id="curl",
     )
     # t1 = KubernetesPodOperator(
