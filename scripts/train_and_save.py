@@ -12,9 +12,12 @@ from datetime import datetime
 @click.option("--data-path", default="/mnt/data/")
 @click.option("--fraction", default=0.1)
 @click.option("--out-path", default="books_classifier/artifacts/models/")
-@click.option("--save-in-file", is_flog=True)
-def train_and_save(tfidf, data_path, fraction, out_path, save_in_file):
-    mlflow.set_tracking_uri("http://mlflow-service:5000")
+@click.option("--save-in-file", is_flag=True)
+@click.option("--mlflow-addr", default="mlflow-service")
+def train_and_save(
+    tfidf, data_path, fraction, out_path, save_in_file, mlflow_addr
+):
+    mlflow.set_tracking_uri(f"http://{mlflow_addr}:5000")
     with mlflow.start_run(
         run_name=f"baseline_{datetime.now().strftime('%Y%m%d')}"
     ):
