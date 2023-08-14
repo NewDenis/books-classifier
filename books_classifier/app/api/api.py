@@ -1,13 +1,7 @@
 from fastapi import APIRouter
 
-from app.api.v1.api import (
-    config_routers_v1
-)
-from app.api.common_services import (
-    health,
-    root,
-    show_configs
-)
+from books_classifier.app.api.v1.api import config_routers_v1
+from books_classifier.app.api.common_services import health, root, show_configs
 
 
 def add_common_services(api_router: APIRouter):

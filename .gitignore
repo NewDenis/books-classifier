@@ -1,6 +1,5 @@
 .idea/
 .python-version
-settings.toml
 .secrets.toml
 __pycache__
 .vscode/

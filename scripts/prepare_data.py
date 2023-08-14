@@ -74,7 +74,7 @@ def save_sentences(
 
 @click.command()
 @click.option("--bucket-name", default="books-raw-data")
-@click.option("--samples", default=10000000)
+@click.option("--samples", default=2000000)
 @click.option("--out-path", default="/mnt/data/")
 def prepare_data(bucket_name, samples, out_path):
     session = boto3.session.Session()

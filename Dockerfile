@@ -1,7 +1,7 @@
 FROM python:3.9.13-slim
 
 ENV PYTHONUNBUFFERED 1
-ENV PYTHONPATH       "${PYTHONPATH}:/app:/base"
+ENV PYTHONPATH       "${PYTHONPATH}:/app:/base:/app/books_classifier"
 ENV PATH             "${PATH}:/app"
 
 COPY . /app

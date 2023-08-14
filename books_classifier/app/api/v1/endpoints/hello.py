@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.schemas.hello import HelloWorld
+from books_classifier.app.schemas.hello import HelloWorld
 
 
 router = APIRouter()
@@ -9,6 +9,5 @@ router = APIRouter()
     "/hello",
     response_model=HelloWorld,
 )
-async def get_test(
-) -> HelloWorld:
+async def get_test() -> HelloWorld:
     return HelloWorld()

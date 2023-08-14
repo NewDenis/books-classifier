@@ -1,10 +1,10 @@
 from pydantic import BaseModel, Field
-from app.config import settings
+from books_classifier.app.config import settings
 
 
 class Root(BaseModel):
     message: str = Field(
-        f"books_classifier v {settings.SERVICE_VERSION} Команды навыков",
+        f"books_classifier v {settings.SERVICE_VERSION}",
         description="Приветственное сообщение от сервера",
-        example="Multihead-classifier v 0.1.0",
+        example="books_classifier v 0.1.0",
     )

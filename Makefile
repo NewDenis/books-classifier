@@ -11,4 +11,4 @@ gen-dvc:
 gen-req:
 	@echo "Генерация requirements.txt из poetry"
 	echo "poetry-core>=1.6.1" | tee requirements.txt
-	poetry export --without-hashes | grep -v "@ file" >> requirements.txt
+	poetry export --without-hashes | grep -v "@ file" | grep -v extract-msg >> requirements.txt

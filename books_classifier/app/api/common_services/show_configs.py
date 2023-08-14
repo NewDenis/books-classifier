@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.config import settings
+from books_classifier.app.config import settings
 
 router = APIRouter()
 

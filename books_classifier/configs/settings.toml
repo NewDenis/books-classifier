@@ -1,0 +1,21 @@
+[default]
+    IS_PRODUCTION = false
+    # MODELS
+    model_name = "tfidf_logreg"
+
+    LOGGER_CONFIG = "books_classifier/configs/log_cfg.yaml"
+    ENCODING = "utf-8"
+
+    PATH_TO_MODELS = 'books_classifier/artifacts/models'
+
+    RUN_SERVER_COMMAND = "main:app_factory"
+    RUN_SERVER_HOST = "0.0.0.0"
+    RUN_SERVER_PORT = 10001
+    RUN_SERVER_ACCESS_LOG = true
+    RUN_SERVER_LOG_LEVEL = "info"
+    RUN_SERVER_FACTORY = true
+    RUN_SERVER_DEBUG_RELOAD = true
+    SERVICE_VERSION = "0.1.0dev"
+    SERVICE_TITLE = "books_classifier"
+    SERVICE_DESCRIPTION = "Books Classifier"
+

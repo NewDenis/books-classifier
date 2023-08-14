@@ -2,9 +2,9 @@ import uvicorn
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, Any
-from app.api.api import config_routers
-from app.config import settings
-from app.da_log import logger
+from books_classifier.app.api.api import config_routers
+from books_classifier.app.config import settings
+from books_classifier.app.da_log import logger
 
 
 def add_all_routers(app: FastAPI) -> None:

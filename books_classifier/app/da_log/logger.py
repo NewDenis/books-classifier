@@ -1,6 +1,6 @@
 from yaml import safe_load
 from typing import Dict, Any
-from app.config import settings
+from books_classifier.app.config import settings
 
 
 def get_log_config() -> Dict[str, Any]:
