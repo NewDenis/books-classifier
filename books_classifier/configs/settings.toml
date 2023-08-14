@@ -14,7 +14,7 @@
     RUN_SERVER_ACCESS_LOG = true
     RUN_SERVER_LOG_LEVEL = "info"
     RUN_SERVER_FACTORY = true
-    RUN_SERVER_DEBUG_RELOAD = true
+    RUN_SERVER_DEBUG_RELOAD = false
     SERVICE_VERSION = "0.1.0dev"
     SERVICE_TITLE = "books_classifier"
     SERVICE_DESCRIPTION = "Books Classifier"
