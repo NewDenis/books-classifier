@@ -2,7 +2,7 @@ PYTHON_VERSION = 3.9.13
 VENV_NAME = books_classifier
 DVC_MODEL_ARTIFACTORY = books_storage
 DOCKER_CONTAINER_LOCAL_NAME = books_classifier
-DOCKER_VERSION = 0.2.6
+DOCKER_VERSION = 0.2.7
 
 
 gen-dvc:

@@ -12,4 +12,4 @@ s3cmd \
     --region ru-central1 \
     --host-bucket "%(bucket)s.storage.yandexcloud.net" \
     -q \
-    put ./data/datasets/raw/*.npy s3://books-raw-data/prepared/
+    put ./data/datasets/raw/*.pqt s3://books-raw-data/prepared/

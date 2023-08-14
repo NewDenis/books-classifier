@@ -3,6 +3,10 @@
 set -e
 set -x
 
+mkdir ./data
+mkdir ./data/datasets
+mkdir ./data/datasets/raw
+
 s3cmd \
     --access_key $AWS_ACCESS_KEY_ID \
     --secret_key $AWS_SECRET_ACCESS_KEY \
