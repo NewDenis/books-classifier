@@ -180,10 +180,10 @@ def train_baseline(tfidf, data_path, frac):
     )
     model = pipeline.fit(train_data["text"], train_data["cls1"])
     predicted = model.predict(test_data["text"])
-    f1 = f1_score(test_data["cls1"], predicted)
+    f1 = f1_score(test_data["cls1"], predicted, average="weighted")
     accuracy = accuracy_score(test_data["cls1"], predicted)
-    precision = precision_score(test_data["cls1"], predicted)
-    recall = recall_score(test_data["cls1"], predicted)
+    precision = precision_score(test_data["cls1"], predicted, average="weighted")
+    recall = recall_score(test_data["cls1"], predicted, average="weighted")
 
     return model, {
         "f1": f1,
