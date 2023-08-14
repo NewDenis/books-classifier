@@ -1,7 +1,12 @@
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import (
+    f1_score,
+    accuracy_score,
+    precision_score,
+    recall_score,
+)
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.preprocessing import FunctionTransformer
 from model_factory.text_preprocessing import text_cleanup
@@ -175,7 +180,14 @@ def train_baseline(tfidf, data_path, frac):
     )
     model = pipeline.fit(train_data["text"], train_data["cls1"])
     predicted = model.predict(test_data["text"])
-    rmse = np.sqrt(mean_squared_error(test_data["cls1"], predicted))
-    mae = mean_absolute_error(test_data["cls1"], predicted)
-    r2 = r2_score(test_data["cls1"], predicted)
-    return model, {"rmse": rmse, "mae": mae, "r2": r2}
+    f1 = f1_score(test_data["cls1"], predicted)
+    accuracy = accuracy_score(test_data["cls1"], predicted)
+    precision = precision_score(test_data["cls1"], predicted)
+    recall = recall_score(test_data["cls1"], predicted)
+
+    return model, {
+        "f1": f1,
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+    }
