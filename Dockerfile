@@ -13,5 +13,5 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 
 WORKDIR /app
 # CMD ["uvicorn", "books_classifier.app.main:app_factory", "--factory", "--host", "0.0.0.0", "--port", "80"]
-COPY ./books_classifier/artifacts/models /app/books_classifier/artifacts/models
-COPY [^books_classifier/artifacts/models] /app
+# COPY ./books_classifier/artifacts/models /app/books_classifier/artifacts/models
+COPY . /app
