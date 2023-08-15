@@ -18,11 +18,6 @@ s3cmd \
 
 python ./scripts/train_and_save.py --data-path ./data
 
-dvc config --project core.no_scm true
-
-dvc add books_classifier/artifacts/models/*
-dvc push
-
 s3cmd \
     --access_key $AWS_ACCESS_KEY_ID \
     --secret_key $AWS_SECRET_ACCESS_KEY \
