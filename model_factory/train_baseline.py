@@ -182,7 +182,9 @@ def train_baseline(tfidf, data_path, frac):
     predicted = model.predict(test_data["text"])
     f1 = f1_score(test_data["cls1"], predicted, average="weighted")
     accuracy = accuracy_score(test_data["cls1"], predicted)
-    precision = precision_score(test_data["cls1"], predicted, average="weighted")
+    precision = precision_score(
+        test_data["cls1"], predicted, average="weighted"
+    )
     recall = recall_score(test_data["cls1"], predicted, average="weighted")
 
     return model, {
