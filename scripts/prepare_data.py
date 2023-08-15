@@ -65,6 +65,8 @@ def save_sentences(
         cls_key = {f"cls{i}": cls for i, cls in enumerate(cls_key[::-1])}
         data = [{"text": sentence, **cls_key} for sentence in sentence_list]
         dataset.append(pd.DataFrame(data))
+    if len(dataset) < 1:
+        return 0
     dataset = pd.concat(dataset, ignore_index=True)
     dataset.to_parquet(
         os.path.join(path_to_save, f"sentences_{findx:0>6}.pqt")
