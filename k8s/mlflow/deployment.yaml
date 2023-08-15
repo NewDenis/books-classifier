@@ -20,9 +20,13 @@ spec:
         - --host=0.0.0.0
         - --port=5000
         - --backend-store-uri=postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres-service/$(POSTGRES_DB)
-        - --default-artifact-root=s3://books-classifier-mlflow/
+        - --default-artifact-root=s3://books-classifier-mlflow/models/
         - --workers=2
         env:
+        - name: MLFLOW_DEFAULT_ARTIFACT_ROOT
+          value: s3://books-classifier-mlflow/models/
+        - name: MLFLOW_ARTIFACTS_DESTINATION
+          value: s3://books-classifier-mlflow/models/
         - name: MLFLOW_S3_ENDPOINT_URL
           value: https://storage.yandexcloud.net
         - name: AWS_ACCESS_KEY_ID
@@ -54,3 +58,14 @@ spec:
         - name: http
           containerPort: 5000
           protocol: TCP
+        volumeMounts:
+        - name: aws-creds
+          mountPath: "/root/.aws/"
+          readOnly: true
+      volumes:
+      - name: aws-creds
+        secret:
+          secretName: aws-credentials
+          items:
+          - key: credentials
+            path: credentials

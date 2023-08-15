@@ -23,7 +23,6 @@ def train_and_save(
     ):
         elapsed = time.perf_counter()
         model, metrics = train_baseline(tfidf, data_path, fraction)
-        mlflow.sklearn.log_model(model, "model")
         mlflow.log_metrics(metrics)
         elapsed = time.perf_counter() - elapsed
         print(f"{model} trained in {elapsed}s")
