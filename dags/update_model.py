@@ -105,6 +105,7 @@ with DAG(
         # volume_mounts=[volume_mount],
         # volumes=[volume],
         secrets=secret_volumes,
+        startup_timeout_seconds=300,
     )
 
     t2 = KubernetesPodOperator(
@@ -118,6 +119,7 @@ with DAG(
         # volume_mounts=[volume_mount],
         # volumes=[volume],
         secrets=secret_volumes,
+        startup_timeout_seconds=300,
     )
 
     t1 >> t2
