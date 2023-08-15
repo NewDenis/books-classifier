@@ -98,7 +98,7 @@ with DAG(
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     t1 = KubernetesPodOperator(
         task_id="prepare_data",
-        image="pimenovdv/books-classifier:0.2.10",
+        image="pimenovdv/books-classifier:0.2.11",
         cmds=["bash", "-cx"],
         arguments=["./scripts/prepare_data.sh"],
         image_pull_policy="Always",
@@ -110,7 +110,7 @@ with DAG(
 
     t2 = KubernetesPodOperator(
         task_id="train_save",
-        image="pimenovdv/books-classifier:0.2.10",
+        image="pimenovdv/books-classifier:0.2.11",
         # cmds=["cat"],
         # arguments=["/app/.dvc/config"],
         cmds=["bash", "-cx"],
