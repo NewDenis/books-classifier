@@ -18,6 +18,8 @@ s3cmd \
 
 python ./scripts/train_and_save.py --data-path ./data
 
+dvc config --project core.no_scm true
+
 dvc add books_classifier/artifacts/models/*
 dvc push
 
