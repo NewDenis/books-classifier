@@ -25,6 +25,7 @@ s3cmd \
     --region ru-central1 \
     --host-bucket "%(bucket)s.storage.yandexcloud.net" \
     -q \
+    --recursive \
     put ./books_classifier/artifacts/models/ s3://books-raw-data/models/
 
     
